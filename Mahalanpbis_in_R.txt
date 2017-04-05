@@ -1,0 +1,50 @@
+Mahalanobis with .R
+
+#read in data
+Variable_Name1 <- read.csv("filename.csv", header = TRUE)
+
+
+#Convert csv.file into a matrix
+M <- cbind(Variable_name1)
+
+#Covariance
+M_cov <- cov(M)
+
+
+#Inverse
+M_inv <- solve(M)
+
+
+Sx1 <- cov(Variable_Name1)
+D2 <- mahalanobis(Variable_Name1, colMeans(Variable_Name1), Sx1)
+
+
+
+
+#what about against a different set? 
+
+
+Variable_Name2 <- read.csv("filename.csv", header = TRUE)
+
+Sx2 <- cov(Variable_Name2)
+D2 <- mahalanobis(Variable_Name2, colMeans(Variable_Name1), Sx1) #NOTICE THE LAST ENTITY IS STILL "Sx1"
+
+
+
+
+
+
+
+#PLOTTING
+plot(density(D2, bw = 0.5),
+     main="Squared Mahalanobis distances, n=100, p=3") ; rug(D2)
+qqplot(qchisq(ppoints(100), df = 3), D2,
+       main = expression("Q-Q plot of Mahalanobis" * ~D^2 *
+                         " vs. quantiles of" * ~ chi[3]^2))
+abline(0, 1, col = 'gray')
+
+
+
+#write
+write.table(actual_file, file = "new_file_name.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
+
